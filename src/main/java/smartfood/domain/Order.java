@@ -26,7 +26,7 @@ public class Order {
         this.deliveryDistanceKm = 0;
         this.deliveryCost = 0;
         this.statusObservers = new ArrayList<>();
-        this.total = calculateTotal();
+        this.total = calculateFoodTotal() + deliveryCost;
     }
 
     public Order(int orderId, List<OrderItem> items, user customer) {
@@ -35,13 +35,28 @@ public class Order {
     }
 
     public double calculateTotal() {
+        return calculateFoodTotal()
+                + deliveryCost
+                + getTypeSpecificFee();
+    }
+
+    private double calculateFoodTotal() {
         double sum = 0;
 
         for (OrderItem item : items) {
             sum += item.calculateSubtotal();
         }
 
-        return sum + deliveryCost;
+        return sum;
+    }
+
+    protected double getTypeSpecificFee() {
+        return 0;
+    }
+
+    protected final void refreshTotal() {
+        total = calculatePricedAmount(
+                calculateTotal(), pricingStrategy);
     }
 
     public double calculateDeliveryCost(
@@ -70,7 +85,9 @@ public class Order {
                     "Delivery cost must be a non-negative number");
         }
 
-        double newBaseAmount = calculateFoodTotal() + calculatedCost;
+        double newBaseAmount = calculateFoodTotal()
+                + getTypeSpecificFee()
+                + calculatedCost;
         double newTotal = calculatePricedAmount(
                 newBaseAmount, pricingStrategy);
 
@@ -113,16 +130,6 @@ public class Order {
         }
 
         return result;
-    }
-
-    private double calculateFoodTotal() {
-        double sum = 0;
-
-        for (OrderItem item : items) {
-            sum += item.calculateSubtotal();
-        }
-
-        return sum;
     }
 
     public void cancel() {
@@ -288,5 +295,9 @@ public class Order {
         }
 
         this.customer = customer;
+    }
+
+    public OrderType getOrderType() {
+        return OrderType.STANDARD;
     }
 }
