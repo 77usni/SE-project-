@@ -1,4 +1,5 @@
 
+
 package smartfood.service;
 
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,8 @@ public class loginServiceTest {
 
     @Test
     public void testValidLogin() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Login successful.",
@@ -18,8 +20,19 @@ public class loginServiceTest {
     }
 
     @Test
+    public void testValidManagerLogin() {
+        user manager = new user(
+                2, "Manager", "manager@gmail.com", "5678", "MANAGER");
+        loginService service = new loginService();
+
+        assertEquals("Login successful.",
+                service.login(manager, "manager@gmail.com", "5678"));
+    }
+
+    @Test
     public void testWrongPassword() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Error: Incorrect password.",
@@ -28,7 +41,8 @@ public class loginServiceTest {
 
     @Test
     public void testWrongEmail() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Error: Incorrect email.",
@@ -37,7 +51,8 @@ public class loginServiceTest {
 
     @Test
     public void testEmptyEmail() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Error: Email is required.",
@@ -46,7 +61,8 @@ public class loginServiceTest {
 
     @Test
     public void testEmptyPassword() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Error: Password is required.",
@@ -55,7 +71,8 @@ public class loginServiceTest {
 
     @Test
     public void testEmptyEmailAndPassword() {
-        user u = new user(1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
+        user u = new user(
+                1, "Husni", "husni@gmail.com", "1234", "CUSTOMER");
         loginService service = new loginService();
 
         assertEquals("Error: Email is required.",
